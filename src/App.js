@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import './App.css';
-import { tarotCards } from './cards-frontend';
+import { tarotCards, shuffleCards } from './cards-frontend';
 
 function App() {
   const [question, setQuestion] = useState('');
@@ -9,9 +9,13 @@ function App() {
   const [aiReading, setAiReading] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [readingComplete, setReadingComplete] = useState(false);
+  const [shuffledCards, setShuffledCards] = useState([]);
 
   const handleSubmit = () => {
     if (question.trim().length > 0) {
+      // Shuffle the cards when showing the card grid
+      const shuffled = shuffleCards([...tarotCards]);
+      setShuffledCards(shuffled);
       setShowCards(true);
     }
   };
@@ -35,6 +39,7 @@ function App() {
     setAiReading('');
     setIsLoading(false);
     setReadingComplete(false);
+    setShuffledCards([]);
   };
 
   return (
@@ -106,8 +111,8 @@ function App() {
                   )}
                 </div>
                 
-                <div className="cards-grid">
-                  {tarotCards.map((card) => {
+                            <div className="cards-grid">
+                              {shuffledCards.map((card) => {
                     const isSelected = selectedCards.find(c => c.id === card.id);
                     return (
                       <div 
@@ -115,7 +120,6 @@ function App() {
                         className={`card-back ${isSelected ? 'selected' : ''}`}
                         onClick={() => isSelected ? handleCardDeselect(card.id) : handleCardSelect(card)}
                       >
-                        <div className="card-number">{card.id + 1}</div>
                         {isSelected && <div className="selected-indicator">✓</div>}
                       </div>
                     );

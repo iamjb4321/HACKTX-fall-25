@@ -174,7 +174,10 @@
 
 .card-back {
   aspect-ratio: 2/3;
-  background: linear-gradient(135deg, #1a1a2e, #16213e);
+  background-image: url('../public/cards/Background.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   border: 2px solid rgba(97, 218, 251, 0.3);
   border-radius: 10px;
   display: flex;
@@ -201,10 +204,7 @@
 }
 
 .card-number {
-  font-family: 'Religath', sans-serif;
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 0.9rem;
-  font-weight: bold;
+  display: none;
 }
 
 .card-back.selected .card-number {
