@@ -1,4 +1,3 @@
-const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
@@ -7,19 +6,24 @@ const { tarotCards, selectRandomCards } = require('../src/cards');
 // Load environment variables
 dotenv.config();
 
-const app = express();
-
 // Initialize Gemini AI
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY, {
   apiVersion: 'v1'
 });
 
-// Middleware
-app.use(cors());
-app.use(express.json());
+// CORS middleware
+const corsMiddleware = cors();
 
-// Tarot reading endpoint
-app.post('/', async (req, res) => {
+// Main handler function
+module.exports = async (req, res) => {
+  // Apply CORS
+  corsMiddleware(req, res, () => {});
+  
+  // Only allow POST requests
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
   console.log('📡 Received request:', req.body);
   console.log('🔑 API Key present:', !!process.env.GEMINI_API_KEY);
   console.log('🔑 API Key length:', process.env.GEMINI_API_KEY ? process.env.GEMINI_API_KEY.length : 0);
@@ -94,7 +98,4 @@ Task: Write a short, mystical yet clear decent lengthy paragraph summary explain
       aiReading: `⚠️ API Error: ${error.message}. The cards speak of change and new beginnings. Trust in your intuition as you navigate this path forward.`
     });
   }
-});
-
-// Export for Vercel
-module.exports = app;
+};

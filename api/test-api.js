@@ -1,4 +1,3 @@
-const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
@@ -6,19 +5,24 @@ const { GoogleGenerativeAI } = require('@google/generative-ai');
 // Load environment variables
 dotenv.config();
 
-const app = express();
-
 // Initialize Gemini AI
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY, {
   apiVersion: 'v1'
 });
 
-// Middleware
-app.use(cors());
-app.use(express.json());
+// CORS middleware
+const corsMiddleware = cors();
 
-// Test API key endpoint
-app.get('/', async (req, res) => {
+// Main handler function
+module.exports = async (req, res) => {
+  // Apply CORS
+  corsMiddleware(req, res, () => {});
+  
+  // Only allow GET requests
+  if (req.method !== 'GET') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
   try {
     if (!process.env.GEMINI_API_KEY) {
       return res.json({ 
@@ -49,7 +53,4 @@ app.get('/', async (req, res) => {
       apiKeyLength: process.env.GEMINI_API_KEY ? process.env.GEMINI_API_KEY.length : 0
     });
   }
-});
-
-// Export for Vercel
-module.exports = app;
+};
