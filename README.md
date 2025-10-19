@@ -61,6 +61,8 @@ A mystical tarot card reading application built with React and Node.js, featurin
    GEMINI_API_KEY=your_gemini_api_key_here
    SERVER_PORT=3001
    ```
+   
+   **Get your Gemini API key** from [Google AI Studio](https://makersuite.google.com/app/apikey)
 
 4. **Add card images**
    Place your tarot card images in the `public/cards/` directory. Make sure to include:
@@ -86,6 +88,25 @@ A mystical tarot card reading application built with React and Node.js, featurin
    # Terminal 2 - Frontend
    npm start
    ```
+
+## 🚀 **Production Deployment (Vercel)**
+
+### **Environment Variables Setup**
+
+1. **In Vercel Dashboard**:
+   - Go to your project → Settings → Environment Variables
+   - Add `GEMINI_API_KEY` with your actual API key
+   - `NODE_ENV` is automatically set to `production`
+
+2. **Deploy**:
+   ```bash
+   vercel --prod
+   ```
+
+### **Important Notes**
+- **Port Configuration**: Server automatically uses `process.env.PORT` in production
+- **API URLs**: Frontend automatically uses relative URLs in production
+- **Environment Variables**: Never commit `.env` files to version control
 
 ## 🎯 How to Use
 

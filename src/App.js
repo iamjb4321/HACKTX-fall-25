@@ -195,7 +195,11 @@ function App() {
                     onClick={async () => {
                       try {
                         console.log('Testing API...');
-                        const response = await fetch('/api/test-api');
+                        const API_BASE_URL = process.env.NODE_ENV === 'production' 
+                          ? '' // Use relative URLs in production (same domain)
+                          : 'http://localhost:3001';
+                        
+                        const response = await fetch(`${API_BASE_URL}/api/test-api`);
                         const data = await response.json();
                         console.log('API Test Result:', data);
                         alert(`API Test: ${data.success ? 'SUCCESS' : 'FAILED'}\n${JSON.stringify(data, null, 2)}`);
@@ -287,7 +291,11 @@ function App() {
                         onClick={async () => {
                           try {
                             console.log('Testing API...');
-                            const response = await fetch('/api/test-api');
+                            const API_BASE_URL = process.env.NODE_ENV === 'production' 
+                              ? '' // Use relative URLs in production (same domain)
+                              : 'http://localhost:3001';
+                            
+                            const response = await fetch(`${API_BASE_URL}/api/test-api`);
                             const data = await response.json();
                             console.log('API Test Result:', data);
                             alert(`API Test: ${data.success ? 'SUCCESS' : 'FAILED'}\n${JSON.stringify(data, null, 2)}`);
@@ -320,7 +328,11 @@ function App() {
                                       selectedCards: selectedCards 
                                     });
                                     
-                                    const response = await fetch('/api/getReading', {
+                                    const API_BASE_URL = process.env.NODE_ENV === 'production' 
+                                      ? '' // Use relative URLs in production (same domain)
+                                      : 'http://localhost:3001';
+                                    
+                                    const response = await fetch(`${API_BASE_URL}/api/getReading`, {
                                       method: 'POST',
                                       headers: {
                                         'Content-Type': 'application/json',
