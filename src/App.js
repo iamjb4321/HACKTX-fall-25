@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
 import { tarotCards, shuffleCards } from './cards-frontend';
 
@@ -11,6 +11,33 @@ function App() {
   const [readingComplete, setReadingComplete] = useState(false);
   const [shuffledCards, setShuffledCards] = useState([]);
   const [revealedCards, setRevealedCards] = useState(new Set());
+  const [visibleCards, setVisibleCards] = useState(0);
+
+  // Scroll effect for progressive card animation
+  useEffect(() => {
+    if (!showCards) return;
+
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+      
+      // Calculate scroll percentage (0 to 1)
+      const scrollPercentage = scrollPosition / (documentHeight - windowHeight);
+      
+      // Calculate how many cards should be visible based on scroll
+      const totalCards = shuffledCards.length;
+      const cardsToShow = Math.min(Math.floor(scrollPercentage * totalCards * 1.5), totalCards);
+      
+      setVisibleCards(cardsToShow);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    // Initial call to set initial state
+    handleScroll();
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [showCards, shuffledCards]);
 
   const handleSubmit = () => {
     if (question.trim().length > 0) {
@@ -18,6 +45,7 @@ function App() {
       const shuffled = shuffleCards([...tarotCards]);
       setShuffledCards(shuffled);
       setShowCards(true);
+      setVisibleCards(0); // Reset visible cards count
     }
   };
 
@@ -38,11 +66,67 @@ function App() {
     setReadingComplete(false);
     setShuffledCards([]);
     setRevealedCards(new Set());
+    setVisibleCards(0);
   };
 
   return (
     <div className="App">
       <div className="App-header">
+        {/* Celestial Elements */}
+        <div className="sparkle"></div>
+        <div className="sparkle"></div>
+        <div className="sparkle"></div>
+        <div className="sparkle"></div>
+        <div className="sparkle"></div>
+        <div className="sparkle"></div>
+        <div className="sparkle"></div>
+        <div className="sparkle"></div>
+        <div className="sparkle"></div>
+        <div className="sparkle"></div>
+        
+        <div className="star"></div>
+        <div className="star"></div>
+        <div className="star"></div>
+        <div className="star"></div>
+        <div className="star"></div>
+        <div className="star"></div>
+        <div className="star"></div>
+        <div className="star"></div>
+        
+        <div className="large-star"></div>
+        <div className="large-star"></div>
+        <div className="large-star"></div>
+        <div className="large-star"></div>
+        <div className="large-star"></div>
+        <div className="large-star"></div>
+        <div className="large-star"></div>
+        <div className="large-star"></div>
+        <div className="large-star"></div>
+        <div className="large-star"></div>
+        
+        <div className="shooting-star"></div>
+        <div className="shooting-star"></div>
+        <div className="shooting-star"></div>
+        <div className="shooting-star"></div>
+        <div className="shooting-star"></div>
+        <div className="shooting-star"></div>
+        
+        <div className="floating-particle"></div>
+        <div className="floating-particle"></div>
+        <div className="floating-particle"></div>
+        <div className="floating-particle"></div>
+        <div className="floating-particle"></div>
+        <div className="floating-particle"></div>
+        <div className="floating-particle"></div>
+        <div className="floating-particle"></div>
+        
+        <div className="drifting-sparkle"></div>
+        <div className="drifting-sparkle"></div>
+        <div className="drifting-sparkle"></div>
+        <div className="drifting-sparkle"></div>
+        <div className="drifting-sparkle"></div>
+        <div className="drifting-sparkle"></div>
+        
         <h1 className="App-title">Ask Me Anything Longhorn</h1>
         
         {!showCards ? (
@@ -111,14 +195,14 @@ function App() {
                               )}
                             </div>
                 
-                            <div className="cards-grid">
-                              {shuffledCards.map((card) => {
+                        <div className="cards-grid">
+                          {shuffledCards.map((card, index) => {
                     const isSelected = selectedCards.find(c => c.id === card.id);
                     const isRevealed = revealedCards.has(card.id);
                     return (
                         <div 
                           key={card.id}
-                          className={`card-back ${isSelected ? 'selected' : ''} ${selectedCards.length === 3 && !isSelected ? 'locked' : ''}`}
+                          className={`card-back ${isSelected ? 'selected' : ''} ${selectedCards.length === 3 && !isSelected ? 'locked' : ''} ${index < visibleCards ? 'animate-in' : ''}`}
                           onClick={() => {
                             // If 3 cards are already selected and this card isn't selected, don't allow clicking
                             if (selectedCards.length === 3 && !isSelected) {
