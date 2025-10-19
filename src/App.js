@@ -10,6 +10,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [readingComplete, setReadingComplete] = useState(false);
   const [shuffledCards, setShuffledCards] = useState([]);
+  const [revealedCards, setRevealedCards] = useState(new Set());
 
   const handleSubmit = () => {
     if (question.trim().length > 0) {
@@ -23,12 +24,8 @@ function App() {
   const handleCardSelect = (card) => {
     if (!readingComplete && selectedCards.length < 3 && !selectedCards.find(c => c.id === card.id)) {
       setSelectedCards([...selectedCards, card]);
-    }
-  };
-
-  const handleCardDeselect = (cardId) => {
-    if (!readingComplete) {
-      setSelectedCards(selectedCards.filter(c => c.id !== cardId));
+      // Automatically reveal the card when selected
+      setRevealedCards(prev => new Set(prev).add(card.id));
     }
   };
 
@@ -40,6 +37,7 @@ function App() {
     setIsLoading(false);
     setReadingComplete(false);
     setShuffledCards([]);
+    setRevealedCards(new Set());
   };
 
   return (
@@ -88,6 +86,7 @@ function App() {
                 <div className="selected-cards-display">
                   {selectedCards.map((card, index) => (
                     <div key={card.id} className="reading-card">
+                      <img src={card.image} alt={card.name} className="card-image" />
                       <h4>Card {index + 1}: {card.name}</h4>
                       <p>{card.meaning}</p>
                     </div>
@@ -101,25 +100,45 @@ function App() {
               </div>
             ) : (
               <>
-                <div className="instructions">
-                  <h3>Select 3 cards for your reading:</h3>
-                  <p>Click on any card to select it. You can deselect by clicking again.</p>
-                  {selectedCards.length > 0 && (
-                    <p className="selection-status">
-                      Selected: {selectedCards.length}/3 cards
-                    </p>
-                  )}
-                </div>
+                            <div className="instructions">
+                              <h3>Select 3 cards for your reading:</h3>
+                              <p>Click on any card to reveal and select it. Once selected, cards cannot be changed. Choose wisely!</p>
+                              {selectedCards.length > 0 && (
+                                <p className="selection-status">
+                                  Selected: {selectedCards.length}/3 cards
+                                  {selectedCards.length === 3 && " - Selection complete!"}
+                                </p>
+                              )}
+                            </div>
                 
                             <div className="cards-grid">
                               {shuffledCards.map((card) => {
                     const isSelected = selectedCards.find(c => c.id === card.id);
+                    const isRevealed = revealedCards.has(card.id);
                     return (
-                      <div 
-                        key={card.id}
-                        className={`card-back ${isSelected ? 'selected' : ''}`}
-                        onClick={() => isSelected ? handleCardDeselect(card.id) : handleCardSelect(card)}
-                      >
+                        <div 
+                          key={card.id}
+                          className={`card-back ${isSelected ? 'selected' : ''} ${selectedCards.length === 3 && !isSelected ? 'locked' : ''}`}
+                          onClick={() => {
+                            // If 3 cards are already selected and this card isn't selected, don't allow clicking
+                            if (selectedCards.length === 3 && !isSelected) {
+                              return;
+                            }
+                            
+                            // If card is already selected, don't allow any interaction
+                            if (isSelected) {
+                              return;
+                            }
+                            
+                            // Select the card (which will automatically reveal it)
+                            handleCardSelect(card);
+                          }}
+                        >
+                        {isRevealed ? (
+                          <img src={card.image} alt={card.name} className="card-front-image" />
+                        ) : (
+                          <div className="card-back-image"></div>
+                        )}
                         {isSelected && <div className="selected-indicator">✓</div>}
                       </div>
                     );
@@ -132,6 +151,7 @@ function App() {
                     <div className="selected-cards-display">
                       {selectedCards.map((card, index) => (
                         <div key={card.id} className="reading-card">
+                          <img src={card.image} alt={card.name} className="card-image" />
                           <h4>Card {index + 1}: {card.name}</h4>
                           <p>{card.meaning}</p>
                         </div>
