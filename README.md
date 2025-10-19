@@ -1,70 +1,193 @@
-# Getting Started with Create React App
+# 🔮 Ask Me Anything Longhorn - AI Tarot Reading App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A mystical tarot card reading application built with React and Node.js, featuring AI-powered interpretations using Google's Gemini API. Experience the magic of tarot with beautiful animations, celestial effects, and personalized readings.
 
-## Available Scripts
+![UT Burnt Orange Theme](https://img.shields.io/badge/Theme-UT%20Burnt%20Orange-orange)
+![React](https://img.shields.io/badge/React-18.0-blue)
+![Node.js](https://img.shields.io/badge/Node.js-Express-green)
+![AI Powered](https://img.shields.io/badge/AI-Gemini%20API-purple)
 
-In the project directory, you can run:
+## ✨ Features
 
-### `npm start`
+### 🎴 **Interactive Tarot Experience**
+- **78 Tarot Cards**: Complete deck with Major Arcana and Minor Arcana
+- **Card Selection**: Choose 3 cards for your personalized reading
+- **Shuffled Deck**: Cards appear in different order for each question
+- **Scroll-Based Animations**: Cards reveal progressively as you scroll
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### 🤖 **AI-Powered Interpretations**
+- **Gemini AI Integration**: Advanced AI interpretations for each reading
+- **Personalized Responses**: Unique interpretations based on your question and selected cards
+- **200-Word Limit**: Concise, meaningful readings
+- **Loading Animation**: Mystical eye.gif overlay during AI processing
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### 🌟 **Mystical Visual Experience**
+- **Celestial Effects**: Sparkles, stars, and shooting stars with fade animations
+- **UT Burnt Orange Theme**: Dark, mysterious atmosphere with university colors
+- **Gradient Backgrounds**: Circular burst gradients from burnt orange to black
+- **Smooth Animations**: Card slide-up effects with bounce and scale animations
+- **Custom Typography**: Religath font for mystical feel
 
-### `npm test`
+### 🎨 **User Interface**
+- **Responsive Design**: Works on desktop and mobile devices
+- **Interactive Elements**: Hover effects and smooth transitions
+- **Card Locking System**: Once selected, cards cannot be changed
+- **Auto-Scroll**: Automatically scrolls to results after AI interpretation
+- **Loading States**: Beautiful loading overlays and progress indicators
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 🚀 Getting Started
 
-### `npm run build`
+### Prerequisites
+- Node.js (v14 or higher)
+- npm or yarn
+- Google Gemini API key
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Installation
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1. **Clone the repository**
+   ```bash
+   git clone <your-repo-url>
+   cd HACKTX-fall-25
+   ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-### `npm run eject`
+3. **Set up environment variables**
+   Create a `.env` file in the root directory:
+   ```env
+   GEMINI_API_KEY=your_gemini_api_key_here
+   SERVER_PORT=3001
+   ```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+4. **Add card images**
+   Place your tarot card images in the `public/cards/` directory. Make sure to include:
+   - All 78 tarot card images (named according to the card names)
+   - `Background.png` for the card back design
+   - `Eye.gif` for the loading animation
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Running the Application
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+1. **Start both frontend and backend**
+   ```bash
+   npm run dev
+   ```
+   This will start:
+   - Frontend on `http://localhost:3000`
+   - Backend on `http://localhost:3001`
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+2. **Or run separately**
+   ```bash
+   # Terminal 1 - Backend
+   npm run server
+   
+   # Terminal 2 - Frontend
+   npm start
+   ```
 
-## Learn More
+## 🎯 How to Use
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+1. **Ask Your Question**: Type your question in the text area (up to 200 words)
+2. **Get Your Reading**: Click "Get Your Reading" to shuffle the cards
+3. **Select Cards**: Scroll down and click on 3 cards to reveal them
+4. **Get AI Interpretation**: Click "Get AI Interpretation" for personalized reading
+5. **View Results**: The app will scroll to the top to show your reading
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## 🏗️ Project Structure
 
-### Code Splitting
+```
+HACKTX-fall-25/
+├── public/
+│   ├── cards/           # Tarot card images
+│   ├── Eye.gif         # Loading animation
+│   └── RELIGATH-Demo.otf # Custom font
+├── src/
+│   ├── App.js          # Main React component
+│   ├── App.css         # Styling and animations
+│   ├── cards-frontend.js # Card data for frontend
+│   └── cards.js        # Card data for backend
+├── server.js           # Express backend server
+├── .env               # Environment variables
+└── package.json       # Dependencies and scripts
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## 🛠️ Technical Details
 
-### Analyzing the Bundle Size
+### Frontend (React)
+- **React Hooks**: useState, useEffect for state management
+- **Scroll Detection**: Custom scroll listener for progressive card animations
+- **CSS Animations**: Keyframe animations for cards, particles, and effects
+- **Responsive Grid**: CSS Grid for card layout
+- **Custom Fonts**: Religath font integration
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### Backend (Node.js/Express)
+- **Express Server**: RESTful API endpoints
+- **Gemini AI Integration**: Google's Generative AI for tarot interpretations
+- **CORS Support**: Cross-origin requests enabled
+- **Environment Variables**: Secure API key management
 
-### Making a Progressive Web App
+### Key Components
+- **Card Grid**: Responsive grid with scroll-based animations
+- **Loading Overlay**: Full-screen overlay with eye.gif animation
+- **Celestial Effects**: Multiple particle systems with different animations
+- **AI Reading Display**: Formatted display of AI interpretations
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## 🎨 Customization
 
-### Advanced Configuration
+### Adding New Cards
+1. Add card image to `public/cards/`
+2. Update card data in `src/cards-frontend.js` and `src/cards.js`
+3. Ensure image filename matches card name
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### Styling Changes
+- **Colors**: Modify CSS variables in `src/App.css`
+- **Animations**: Adjust keyframe animations and timing
+- **Layout**: Update grid properties and responsive breakpoints
 
-### Deployment
+### AI Prompts
+- Modify the AI prompt in `server.js` to change interpretation style
+- Adjust response length and tone
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## 📱 Browser Support
 
-### `npm run build` fails to minify
+- Chrome (recommended)
+- Firefox
+- Safari
+- Edge
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 🙏 Acknowledgments
+
+- **Google Gemini AI** for providing the AI interpretation capabilities
+- **UT Austin** for the burnt orange color inspiration
+- **Tarot Community** for card meanings and interpretations
+- **React Community** for the amazing framework and ecosystem
+
+## 🔮 Future Enhancements
+
+- [ ] Card reversal interpretations
+- [ ] Multiple spread types (Celtic Cross, Three-Card, etc.)
+- [ ] User accounts and reading history
+- [ ] Card meaning database
+- [ ] Mobile app version
+- [ ] Voice input for questions
+- [ ] Share reading functionality
+
+---
+
+**Made with 🔮 and ☕ for HACKTX Fall 2025**
+
+*"The cards speak through the digital realm, guided by ancient wisdom and modern technology."*
