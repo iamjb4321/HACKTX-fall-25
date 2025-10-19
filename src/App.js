@@ -144,7 +144,7 @@ function App() {
             <div className="chat-container">
               <textarea 
                 className="chat-input"
-                placeholder="Type your question here... (200 word limit)"
+                placeholder="Type your question here... (1000 character limit)"
                 rows="8"
                 cols="50"
                 value={question}
@@ -196,6 +196,7 @@ function App() {
               <>
                             <div className="instructions">
                               <h3>Select 3 cards for your reading:</h3>
+                              <p>Scroll down to reveal cards</p>
                               <p>Click on any card to reveal and select it. Once selected, cards cannot be changed. Choose wisely!</p>
                               {selectedCards.length > 0 && (
                                 <p className="selection-status">
