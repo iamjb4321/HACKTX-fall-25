@@ -262,7 +262,7 @@ function App() {
                                   setIsLoading(true);
                                   try {
                                     console.log('Getting AI reading for selected cards:', selectedCards.map(c => c.name));
-                                    const response = await fetch('http://localhost:3001/getReading', {
+                                    const response = await fetch('/api/getReading', {
                                       method: 'POST',
                                       headers: {
                                         'Content-Type': 'application/json',

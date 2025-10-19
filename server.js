@@ -8,7 +8,7 @@ const { tarotCards, selectRandomCards } = require('./src/cards');
 dotenv.config();
 
 const app = express();
-const PORT = process.env.SERVER_PORT || 3001;
+const PORT = process.env.PORT || process.env.SERVER_PORT || 3001;
 
 // Initialize Gemini AI
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY, {
@@ -97,8 +97,13 @@ app.get('/health', (req, res) => {
   res.json({ status: 'OK', message: 'Tarot reading server is running' });
 });
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`🔮 Tarot reading server running on port ${PORT}`);
-  console.log(`📡 Health check: http://localhost:${PORT}/health`);
-});
+// Start server (only in development)
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`🔮 Tarot reading server running on port ${PORT}`);
+    console.log(`📡 Health check: http://localhost:${PORT}/health`);
+  });
+}
+
+// Export for Vercel
+module.exports = app;
