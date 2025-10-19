@@ -76,7 +76,7 @@ export const tarotCards = [
   {
     id: 10,
     name: "Wheel of Fortune",
-    image: "/cards/wheel-of-fortune.jpg",
+    image: "/cards/wheel-fortune.jpg",
     meaning: "Change, cycles, destiny",
     category: "Major Arcana"
   },
