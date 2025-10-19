@@ -25,6 +25,8 @@ app.use(express.static('public'));
 // Tarot reading endpoint
 app.post('/getReading', async (req, res) => {
   console.log('📡 Received request:', req.body);
+  console.log('🔑 API Key present:', !!process.env.GEMINI_API_KEY);
+  console.log('🔑 API Key length:', process.env.GEMINI_API_KEY ? process.env.GEMINI_API_KEY.length : 0);
   
   // Declare selectedCards at function scope so it's accessible in catch block
   let selectedCards;
@@ -53,7 +55,7 @@ app.post('/getReading', async (req, res) => {
       console.log('⚠️ No Gemini API key set, using fallback');
       return res.json({
         cards: selectedCards,
-        aiReading: "The cards speak of change and new beginnings. Trust in your intuition as you navigate this path forward. The universe is guiding you toward your highest good."
+        aiReading: "⚠️ API Key Error: No Gemini API key configured. Please check your environment variables. The cards speak of change and new beginnings. Trust in your intuition as you navigate this path forward."
       });
     }
     
@@ -69,11 +71,15 @@ Task: Write a short, mystical yet clear decent lengthy paragraph summary explain
 `;
 
     console.log('🤖 Calling Gemini API...');
+    console.log('🤖 Model:', "gemini-2.5-flash");
+    console.log('🤖 Prompt length:', prompt.length);
+    
     // Get AI response
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
     const result = await model.generateContent(prompt);
     const aiReading = result.response.text();
     console.log('✨ AI response received');
+    console.log('✨ Response length:', aiReading.length);
 
     // Return the response
     res.json({
@@ -83,18 +89,59 @@ Task: Write a short, mystical yet clear decent lengthy paragraph summary explain
 
   } catch (error) {
     console.error('❌ Error generating reading:', error);
+    console.error('❌ Error message:', error.message);
+    console.error('❌ Error stack:', error.stack);
     
     // Fallback response if AI fails - use the same cards that were already selected
     res.json({
       cards: selectedCards,
-      aiReading: "The cards speak of change and new beginnings. Trust in your intuition as you navigate this path forward. The universe is guiding you toward your highest good."
+      aiReading: `⚠️ API Error: ${error.message}. The cards speak of change and new beginnings. Trust in your intuition as you navigate this path forward.`
     });
   }
 });
 
 // Health check endpoint
 app.get('/health', (req, res) => {
-  res.json({ status: 'OK', message: 'Tarot reading server is running' });
+  res.json({ 
+    status: 'OK', 
+    message: 'Tarot reading server is running',
+    apiKeyPresent: !!process.env.GEMINI_API_KEY,
+    apiKeyLength: process.env.GEMINI_API_KEY ? process.env.GEMINI_API_KEY.length : 0
+  });
+});
+
+// Test API key endpoint
+app.get('/test-api', async (req, res) => {
+  try {
+    if (!process.env.GEMINI_API_KEY) {
+      return res.json({ 
+        success: false, 
+        error: 'No API key configured',
+        apiKeyPresent: false 
+      });
+    }
+    
+    console.log('🧪 Testing Gemini API...');
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+    const result = await model.generateContent("Say 'API test successful'");
+    const response = result.response.text();
+    
+    res.json({ 
+      success: true, 
+      message: 'API test successful',
+      response: response,
+      apiKeyPresent: true,
+      apiKeyLength: process.env.GEMINI_API_KEY.length
+    });
+  } catch (error) {
+    console.error('❌ API test failed:', error);
+    res.json({ 
+      success: false, 
+      error: error.message,
+      apiKeyPresent: !!process.env.GEMINI_API_KEY,
+      apiKeyLength: process.env.GEMINI_API_KEY ? process.env.GEMINI_API_KEY.length : 0
+    });
+  }
 });
 
 // Start server (only in development)

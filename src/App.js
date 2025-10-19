@@ -190,6 +190,32 @@ function App() {
                   <button className="new-reading-btn" onClick={resetReading}>
                     Ask Another Question
                   </button>
+                  <button 
+                    className="test-api-btn" 
+                    onClick={async () => {
+                      try {
+                        console.log('Testing API...');
+                        const response = await fetch('/api/test-api');
+                        const data = await response.json();
+                        console.log('API Test Result:', data);
+                        alert(`API Test: ${data.success ? 'SUCCESS' : 'FAILED'}\n${JSON.stringify(data, null, 2)}`);
+                      } catch (error) {
+                        console.error('API Test Error:', error);
+                        alert(`API Test Error: ${error.message}`);
+                      }
+                    }}
+                    style={{
+                      backgroundColor: '#ff6b35',
+                      color: 'white',
+                      border: 'none',
+                      padding: '10px 20px',
+                      borderRadius: '8px',
+                      cursor: 'pointer',
+                      marginLeft: '10px'
+                    }}
+                  >
+                    Test API
+                  </button>
                 </div>
               </div>
             ) : (
@@ -256,12 +282,44 @@ function App() {
                       <button className="new-reading-btn" onClick={resetReading}>
                         Ask Another Question
                       </button>
+                      <button 
+                        className="test-api-btn" 
+                        onClick={async () => {
+                          try {
+                            console.log('Testing API...');
+                            const response = await fetch('/api/test-api');
+                            const data = await response.json();
+                            console.log('API Test Result:', data);
+                            alert(`API Test: ${data.success ? 'SUCCESS' : 'FAILED'}\n${JSON.stringify(data, null, 2)}`);
+                          } catch (error) {
+                            console.error('API Test Error:', error);
+                            alert(`API Test Error: ${error.message}`);
+                          }
+                        }}
+                        style={{
+                          backgroundColor: '#ff6b35',
+                          color: 'white',
+                          border: 'none',
+                          padding: '10px 20px',
+                          borderRadius: '8px',
+                          cursor: 'pointer',
+                          marginLeft: '10px'
+                        }}
+                      >
+                        Test API
+                      </button>
                               <button 
                                 className="ai-reading-btn" 
                                 onClick={async () => {
                                   setIsLoading(true);
                                   try {
                                     console.log('Getting AI reading for selected cards:', selectedCards.map(c => c.name));
+                                    console.log('API endpoint:', '/api/getReading');
+                                    console.log('Request payload:', { 
+                                      userInput: question,
+                                      selectedCards: selectedCards 
+                                    });
+                                    
                                     const response = await fetch('/api/getReading', {
                                       method: 'POST',
                                       headers: {
@@ -273,7 +331,18 @@ function App() {
                                       }),
                                     });
                                     
+                                    console.log('Response status:', response.status);
+                                    console.log('Response ok:', response.ok);
+                                    
+                                    if (!response.ok) {
+                                      const errorText = await response.text();
+                                      console.error('API Error:', errorText);
+                                      throw new Error(`API Error: ${response.status} - ${errorText}`);
+                                    }
+                                    
                                     const data = await response.json();
+                                    console.log('Response data:', data);
+                                    
                                     setAiReading(data.aiReading);
                                     setReadingComplete(true);
                                     
@@ -281,6 +350,10 @@ function App() {
                                     window.scrollTo({ top: 0, behavior: 'smooth' });
                                   } catch (error) {
                                     console.error('Error fetching AI reading:', error);
+                                    // Show error to user
+                                    setAiReading(`Error: ${error.message}. Please check the console for more details.`);
+                                    setReadingComplete(true);
+                                    window.scrollTo({ top: 0, behavior: 'smooth' });
                                   } finally {
                                     setIsLoading(false);
                                   }
