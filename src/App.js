@@ -125,7 +125,17 @@ function App() {
         <div className="drifting-sparkle"></div>
         <div className="drifting-sparkle"></div>
         <div className="drifting-sparkle"></div>
-        <div className="drifting-sparkle"></div>
+        <div className="drifting-sparkle">        </div>
+        
+        {/* Loading Overlay */}
+        {isLoading && (
+          <div className="loading-overlay">
+            <div className="loading-container">
+              <img src="/Eye.gif" alt="Loading..." className="loading-eye" />
+              <p className="loading-text">The cards are speaking...</p>
+            </div>
+          </div>
+        )}
         
         <h1 className="App-title">Ask Me Anything Longhorn</h1>
         
@@ -245,36 +255,39 @@ function App() {
                       <button className="new-reading-btn" onClick={resetReading}>
                         Ask Another Question
                       </button>
-                      <button 
-                        className="ai-reading-btn" 
-                        onClick={async () => {
-                          setIsLoading(true);
-                          try {
-                            console.log('Getting AI reading for selected cards:', selectedCards.map(c => c.name));
-                            const response = await fetch('http://localhost:3001/getReading', {
-                              method: 'POST',
-                              headers: {
-                                'Content-Type': 'application/json',
-                              },
-                              body: JSON.stringify({ 
-                                userInput: question,
-                                selectedCards: selectedCards 
-                              }),
-                            });
-                            
-                            const data = await response.json();
-                            setAiReading(data.aiReading);
-                            setReadingComplete(true);
-                          } catch (error) {
-                            console.error('Error fetching AI reading:', error);
-                          } finally {
-                            setIsLoading(false);
-                          }
-                        }}
-                        disabled={isLoading}
-                      >
-                        {isLoading ? 'Getting AI Reading...' : 'Get AI Interpretation'}
-                      </button>
+                              <button 
+                                className="ai-reading-btn" 
+                                onClick={async () => {
+                                  setIsLoading(true);
+                                  try {
+                                    console.log('Getting AI reading for selected cards:', selectedCards.map(c => c.name));
+                                    const response = await fetch('http://localhost:3001/getReading', {
+                                      method: 'POST',
+                                      headers: {
+                                        'Content-Type': 'application/json',
+                                      },
+                                      body: JSON.stringify({ 
+                                        userInput: question,
+                                        selectedCards: selectedCards 
+                                      }),
+                                    });
+                                    
+                                    const data = await response.json();
+                                    setAiReading(data.aiReading);
+                                    setReadingComplete(true);
+                                    
+                                    // Scroll to top after AI response is ready
+                                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                                  } catch (error) {
+                                    console.error('Error fetching AI reading:', error);
+                                  } finally {
+                                    setIsLoading(false);
+                                  }
+                                }}
+                                disabled={isLoading}
+                              >
+                                {isLoading ? 'Getting AI Reading...' : 'Get AI Interpretation'}
+                              </button>
                     </div>
                   </div>
                 )}

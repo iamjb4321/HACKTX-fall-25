@@ -85,6 +85,75 @@
   z-index: 3;
 }
 
+/* Loading Overlay */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  background: rgba(20, 10, 0, 0.9);
+  border-radius: 20px;
+  border: 2px solid rgba(255, 140, 0, 0.6);
+  box-shadow: 0 0 50px rgba(255, 140, 0, 0.3);
+  min-width: 300px;
+  min-height: 200px;
+}
+
+.loading-eye {
+  width: 120px;
+  height: 120px;
+  margin-bottom: 20px;
+  border-radius: 50%;
+  box-shadow: 0 0 30px rgba(255, 140, 0, 0.6);
+  animation: eyeGlow 2s ease-in-out infinite alternate;
+}
+
+.loading-text {
+  font-family: 'Religath', sans-serif;
+  font-size: 1.2rem;
+  color: #ff8c00;
+  text-align: center;
+  margin: 0;
+  animation: textPulse 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes eyeGlow {
+  0% {
+    box-shadow: 0 0 20px rgba(255, 140, 0, 0.4);
+    transform: scale(1);
+  }
+  100% {
+    box-shadow: 0 0 40px rgba(255, 140, 0, 0.8);
+    transform: scale(1.05);
+  }
+}
+
+@keyframes textPulse {
+  0% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.02);
+  }
+}
+
 /* Celestial Sparkles */
 .sparkle {
   position: absolute;
